@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     
     let normalCell = "normal"
     let nameCell = "name"
@@ -18,14 +18,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var dataArr = Array<UserInfo>()
     let model = PersonModel()
     
+    var isSearching = false
+    var searchArr = Array<UserInfo>()
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.title = "客户资源"
-        
-        let leftItem = UIBarButtonItem.init(title: "删除", style: .plain, target: self, action: #selector(removeUser))
-        self.navigationItem.leftBarButtonItem = leftItem
         
         let rightItem = UIBarButtonItem.init(title: "添加", style: .plain, target: self, action: #selector(addUser))
         self.navigationItem.rightBarButtonItem = rightItem
@@ -33,11 +33,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         initSubview()
         
         getData()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        tableview.setEditing(false, animated: true)
     }
     
     func getData() {
@@ -49,6 +44,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func initSubview() {
         tableview.delegate = self
         tableview.dataSource = self
+        tableview.tableHeaderView = headerView()
         tableview.tableFooterView = UIView()
         tableview.register(UITableViewCell.self, forCellReuseIdentifier: normalCell)
         
@@ -56,11 +52,24 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
+        if isSearching {
+            return 1
+        }
         return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if self.isSearching {
+            return searchArr.count
+        }
         return dataArr.count
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if isSearching {
+            return 0
+        }
+        return 30
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -70,7 +79,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableview.dequeueReusableCell(withIdentifier: normalCell)
         cell?.selectionStyle = .none
-        let info = dataArr[indexPath.row]
+        let info = isSearching ? searchArr[indexPath.row] : dataArr[indexPath.row]
         cell?.textLabel?.text = info.name
         return cell!
     }
@@ -90,31 +99,30 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         return "删除"
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        return .delete
+    }
+    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        let alert = UIAlertController.init(title: "提示", message: "是否删除", preferredStyle: .alert)
+        let delete = UIAlertAction.init(title: "删除", style: .default) { (delete) in
+            self.removeUser(indexPath: indexPath)
+        }
+        let cancel = UIAlertAction.init(title: "取消", style: .cancel, handler: nil)
+        alert.addAction(delete)
+        alert.addAction(cancel)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func removeUser(indexPath: IndexPath) {
         let info = dataArr[indexPath.row]
         if model.deleteData(id: info.id) {
             dataArr.remove(at: indexPath.row)
             self.tableview.deleteRows(at: [indexPath], with: .automatic)
-        }
-        
-        if dataArr.count == 0 {
-            tableview.setEditing(false, animated: true)
-        }
-    }
-    
-    func removeUser(sender: UIBarButtonItem) {
-        if dataArr.count == 0 {
-            sender.title = "删除"
-            tableview.setEditing(false, animated: true)
-            return
-        }
-        
-        tableview.setEditing(!tableview.isEditing, animated: true)
-        
-        if tableview.isEditing {
-            sender.title = "完成"
-        } else {
-            sender.title = "删除"
         }
     }
     
@@ -125,6 +133,49 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             self.getData()
         }
         self.navigationController?.pushViewController(VC, animated: true)
+    }
+    
+    
+    func headerView() -> UIView {
+        let searchBar = UISearchBar.init(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 50))
+        searchBar.delegate = self
+        searchBar.returnKeyType = .done
+        return searchBar
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        isSearching = true
+        searchArr.removeAll()
+        for item in dataArr {
+            if item.name.contains(searchText) || item.name.converToPinyin().contains(searchText) {
+                searchArr.append(item)
+            }
+        }
+        tableview.reloadData()
+    }
+    
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        isSearching = true
+        tableview.reloadData()
+        searchBar.showsCancelButton = true
+        return true
+    }
+    
+    func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
+        searchBar.text = ""
+        isSearching = false
+        searchArr.removeAll()
+        tableview.reloadData()
+        searchBar.showsCancelButton = false
+        return true
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
     }
 
     override func didReceiveMemoryWarning() {

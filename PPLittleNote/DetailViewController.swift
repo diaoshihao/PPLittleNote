@@ -52,12 +52,35 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.selectionStyle = .none
         cell.imageView?.image = UIImage.init(named: "Group 5")
         cell.textLabel?.text = titles[indexPath.section][indexPath.row]
+        
+        if indexPath.section == 0 && (indexPath.row == 2 || indexPath.row == 4 || indexPath.row == 5 || indexPath.row == 7 || indexPath.row == 10) {
+            cell.textField.isEnabled = false
+        }
         setText(for: cell, at: indexPath)
         cell.didChangeText = {
             (text: String) -> Void in
             self.getText(from: text, at: indexPath)
         }
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 0 {
+            switch indexPath.row {
+            case 2:
+                showOptions(options: ["男", "女"], indexPath: indexPath)
+            case 4:
+                showOptions(options: [], indexPath: indexPath)
+            case 5:
+                showOptions(options: ["身份证", "护照", "港澳通行证"], indexPath: indexPath)
+            case 7:
+                showOptions(options: ["已婚", "未婚"], indexPath: indexPath)
+            case 10:
+                showOptions(options: ["有", "无"], indexPath: indexPath)
+            default:
+                break
+            }
+        }
     }
     
     func setText(for cell: CustomCell, at indexPath: IndexPath) {
@@ -157,6 +180,17 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         showAlert(success: model.saveData(info: userInfo))
     }
     
+    func showOptions(options: Array<String>, indexPath: IndexPath) {
+        let pickerView = PickerView.init(with: options)
+        pickerView.selectClosure = {
+            (text: String) in
+            let cell = self.tableview.cellForRow(at: indexPath) as! CustomCell
+            cell.textField.text = text
+            self.getText(from: text, at: indexPath)
+        }
+        pickerView.show()
+    }
+    
     func showAlert(success: Bool) {
         var message = "已更新数据"
         if !success {
@@ -199,7 +233,6 @@ class CustomCell: UITableViewCell, UITextFieldDelegate {
     var textField = UITextField()
     
     var didChangeText: ((String) -> Void)?
-    
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
