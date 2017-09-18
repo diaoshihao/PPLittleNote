@@ -16,16 +16,21 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     let tableview = UITableView.init(frame: UIScreen.main.bounds, style: UITableViewStyle.plain)
     
     var dataArr = Array<UserInfo>()
-    let model = PersonModel()
+//    let model = PersonModel()
     
     var isSearching = false
     var searchArr = Array<UserInfo>()
+    
+    let sqlMan = SqliteManager.shareManager
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.title = "客户资源"
+        
+        let leftItem = UIBarButtonItem.init(title: "导出", style: .plain, target: self, action: #selector(output))
+        self.navigationItem.leftBarButtonItem = leftItem
         
         let rightItem = UIBarButtonItem.init(title: "添加", style: .plain, target: self, action: #selector(addUser))
         self.navigationItem.rightBarButtonItem = rightItem
@@ -37,7 +42,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func getData() {
         
-        dataArr = model.getData();
+        dataArr = sqlMan.queryAll()
         tableview.reloadData()
     }
     
@@ -120,7 +125,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func removeUser(indexPath: IndexPath) {
         let info = dataArr[indexPath.row]
-        if model.deleteData(id: info.id) {
+        if sqlMan.delete(identity: info.identity) {
             dataArr.remove(at: indexPath.row)
             self.tableview.deleteRows(at: [indexPath], with: .automatic)
         }
@@ -133,6 +138,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             self.getData()
         }
         self.navigationController?.pushViewController(VC, animated: true)
+    }
+    
+    func output() {
+        let sqlMan = SqliteManager.shareManager
+        let arr = sqlMan.query(by: "name", value: "测试")
+        if arr.count == 0 {
+            
+        }
     }
     
     

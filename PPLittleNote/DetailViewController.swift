@@ -13,7 +13,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var update: (() -> Void)?
     
     let tableview = UITableView.init(frame: UIScreen.main.bounds, style: .plain);
-    let titles = [["客户来源","备注姓名","性别","年龄","出生日期","证件类型","证件号码","婚姻状况","职业","家庭年收入","有无车险"],["手机号码","固定电话","家庭住址"]]
+    let titles = [["客户来源","备注姓名*","性别","年龄","出生日期","证件类型*","证件号码*","婚姻状况","职业","家庭年收入","有无车险"],["拜访记录"],["手机号码","固定电话","家庭住址"]]
     var info = UserInfo()
     
     
@@ -53,8 +53,10 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.imageView?.image = UIImage.init(named: "Group 5")
         cell.textLabel?.text = titles[indexPath.section][indexPath.row]
         
-        if indexPath.section == 0 && (indexPath.row == 2 || indexPath.row == 4 || indexPath.row == 5 || indexPath.row == 7 || indexPath.row == 10) {
+        if indexPath.section == 0 && (indexPath.row == 2 || indexPath.row == 4 || indexPath.row == 5 || indexPath.row == 7 || indexPath.row == 10) || indexPath.section == 1 {
             cell.textField.isEnabled = false
+        } else {
+            cell.textField.isEnabled = true
         }
         setText(for: cell, at: indexPath)
         cell.didChangeText = {
@@ -81,6 +83,11 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 break
             }
         }
+        if indexPath.section == 1 {
+            let VC = ReportViewController()
+            VC.report = info.report
+            self.navigationController?.pushViewController(VC, animated: true)
+        }
     }
     
     func setText(for cell: CustomCell, at indexPath: IndexPath) {
@@ -97,9 +104,9 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
             case 4:
                 cell.textField.text = info.birthday
             case 5:
-                cell.textField.text = info.idType
+                cell.textField.text = info.idtype
             case 6:
-                cell.textField.text = info.id
+                cell.textField.text = info.identity
             case 7:
                 cell.textField.text = info.merriage
             case 8:
@@ -139,9 +146,9 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
             case 4:
                 info.birthday = text
             case 5:
-                info.idType = text
+                info.idtype = text
             case 6:
-                info.id = text
+                info.identity = text
             case 7:
                 info.merriage = text
             case 8:
@@ -169,15 +176,18 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         //点击保存注销第一响应，让textfiled代理endEditing执行以更新数据
         self.view.endEditing(true)
         
-        if info.from == "" || info.name == "" || info.sex == "" || info.age == "" || info.birthday == "" || info.idType == "" || info.id == "" || info.merriage == "" || info.profession == "" || info.income == "" || info.insurence == "" {
+        if info.name == "" || info.idtype == "" || info.identity == "" {
             showAlert(success: false)
             return
         }
         
-        let userInfo = UserInfo(from: info.from, name: info.name, sex: info.sex, age: info.age, birthday: info.birthday, idType: info.idType, id: info.id, merriage: info.merriage, profession: info.profession, income: info.income, insurence: info.insurence, mobilephone: info.mobilephone, telephone: info.telephone, address: info.address)
-        let model = PersonModel()
+        let userInfo = UserInfo(from: info.from, name: info.name, sex: info.sex, age: info.age, birthday: info.birthday, idType: info.idtype, identity: info.identity, merriage: info.merriage, profession: info.profession, income: info.income, insurence: info.insurence, report: info.report, mobilephone: info.mobilephone, telephone: info.telephone, address: info.address)
+//        let model = PersonModel()
         
-        showAlert(success: model.saveData(info: userInfo))
+        let sqlMan = SqliteManager.shareManager
+        
+        showAlert(success: sqlMan.insert(info: userInfo))
+//        showAlert(success: model.saveData(info: userInfo))
     }
     
     func showOptions(options: Array<String>, indexPath: IndexPath) {

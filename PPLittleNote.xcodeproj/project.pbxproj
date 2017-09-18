@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0FFAF5FBDA64628D9723499D /* libPods-PPLittleNote.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE4440D5C33F07FFEE2C69A7 /* libPods-PPLittleNote.a */; };
 		9B31555B1F677E9900111438 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B31555A1F677E9900111438 /* AppDelegate.swift */; };
 		9B31555D1F677E9900111438 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B31555C1F677E9900111438 /* ViewController.swift */; };
 		9B3155601F677E9900111438 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9B31555E1F677E9900111438 /* Main.storyboard */; };
@@ -16,6 +17,9 @@
 		9B31557B1F677E9900111438 /* PPLittleNoteUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B31557A1F677E9900111438 /* PPLittleNoteUITests.swift */; };
 		9B3155891F67B3C000111438 /* String-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B3155881F67B3C000111438 /* String-Extension.swift */; };
 		9B31558D1F67D75600111438 /* PersonModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B31558C1F67D75600111438 /* PersonModel.swift */; };
+		9B5C4D2F1F6F63C600D4C108 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5C4D2E1F6F63C600D4C108 /* ReportViewController.swift */; };
+		9B5C4D311F6F6A1000D4C108 /* DocumentInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5C4D301F6F6A1000D4C108 /* DocumentInteraction.swift */; };
+		9B5C4D331F6F7A9200D4C108 /* SqliteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5C4D321F6F7A9200D4C108 /* SqliteManager.swift */; };
 		9BABA77C1F6BB908005EFFD4 /* PickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BABA77B1F6BB908005EFFD4 /* PickerView.swift */; };
 		9BE304911F692415007A2EFE /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE304901F692415007A2EFE /* DetailViewController.swift */; };
 /* End PBXBuildFile section */
@@ -38,6 +42,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		234A96C12A9EC73E0E8B8A12 /* Pods-PPLittleNote.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PPLittleNote.release.xcconfig"; path = "Pods/Target Support Files/Pods-PPLittleNote/Pods-PPLittleNote.release.xcconfig"; sourceTree = "<group>"; };
+		7739F140CCBA482E407CA676 /* Pods-PPLittleNote.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PPLittleNote.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PPLittleNote/Pods-PPLittleNote.debug.xcconfig"; sourceTree = "<group>"; };
 		9B3155571F677E9900111438 /* PPLittleNote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PPLittleNote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B31555A1F677E9900111438 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9B31555C1F677E9900111438 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -53,8 +59,13 @@
 		9B31557C1F677E9900111438 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9B3155881F67B3C000111438 /* String-Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String-Extension.swift"; sourceTree = "<group>"; };
 		9B31558C1F67D75600111438 /* PersonModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonModel.swift; sourceTree = "<group>"; };
+		9B5C4D2E1F6F63C600D4C108 /* ReportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
+		9B5C4D301F6F6A1000D4C108 /* DocumentInteraction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentInteraction.swift; sourceTree = "<group>"; };
+		9B5C4D321F6F7A9200D4C108 /* SqliteManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SqliteManager.swift; sourceTree = "<group>"; };
+		9B5C4D371F6FA6ED00D4C108 /* PPLittleNote-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PPLittleNote-Bridging-Header.h"; sourceTree = "<group>"; };
 		9BABA77B1F6BB908005EFFD4 /* PickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerView.swift; sourceTree = "<group>"; };
 		9BE304901F692415007A2EFE /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		FE4440D5C33F07FFEE2C69A7 /* libPods-PPLittleNote.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PPLittleNote.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0FFAF5FBDA64628D9723499D /* libPods-PPLittleNote.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,6 +94,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		145C444385FE81CA4D18A1DF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FE4440D5C33F07FFEE2C69A7 /* libPods-PPLittleNote.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		277A6D01E0099074D1F33201 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7739F140CCBA482E407CA676 /* Pods-PPLittleNote.debug.xcconfig */,
+				234A96C12A9EC73E0E8B8A12 /* Pods-PPLittleNote.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		9B31554E1F677E9900111438 = {
 			isa = PBXGroup;
 			children = (
@@ -89,6 +118,8 @@
 				9B31556E1F677E9900111438 /* PPLittleNoteTests */,
 				9B3155791F677E9900111438 /* PPLittleNoteUITests */,
 				9B3155581F677E9900111438 /* Products */,
+				277A6D01E0099074D1F33201 /* Pods */,
+				145C444385FE81CA4D18A1DF /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -108,12 +139,16 @@
 				9B31555A1F677E9900111438 /* AppDelegate.swift */,
 				9B31555C1F677E9900111438 /* ViewController.swift */,
 				9BE304901F692415007A2EFE /* DetailViewController.swift */,
+				9B5C4D2E1F6F63C600D4C108 /* ReportViewController.swift */,
+				9B5C4D301F6F6A1000D4C108 /* DocumentInteraction.swift */,
+				9B5C4D321F6F7A9200D4C108 /* SqliteManager.swift */,
 				9BABA77B1F6BB908005EFFD4 /* PickerView.swift */,
 				9B3155881F67B3C000111438 /* String-Extension.swift */,
 				9B31558C1F67D75600111438 /* PersonModel.swift */,
 				9B31555E1F677E9900111438 /* Main.storyboard */,
 				9B3155611F677E9900111438 /* Assets.xcassets */,
 				9B3155631F677E9900111438 /* LaunchScreen.storyboard */,
+				9B5C4D371F6FA6ED00D4C108 /* PPLittleNote-Bridging-Header.h */,
 				9B3155661F677E9900111438 /* Info.plist */,
 			);
 			path = PPLittleNote;
@@ -144,9 +179,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9B31557F1F677E9900111438 /* Build configuration list for PBXNativeTarget "PPLittleNote" */;
 			buildPhases = (
+				5AD6452D17BC6E1AB0005917 /* [CP] Check Pods Manifest.lock */,
 				9B3155531F677E9900111438 /* Sources */,
 				9B3155541F677E9900111438 /* Frameworks */,
 				9B3155551F677E9900111438 /* Resources */,
+				28832643B35B8B066A89C694 /* [CP] Embed Pods Frameworks */,
+				1768C554B691DA372DA7A4D3 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -267,6 +305,54 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		1768C554B691DA372DA7A4D3 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PPLittleNote/Pods-PPLittleNote-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		28832643B35B8B066A89C694 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PPLittleNote/Pods-PPLittleNote-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5AD6452D17BC6E1AB0005917 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		9B3155531F677E9900111438 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -275,9 +361,12 @@
 				9B31558D1F67D75600111438 /* PersonModel.swift in Sources */,
 				9B31555D1F677E9900111438 /* ViewController.swift in Sources */,
 				9BABA77C1F6BB908005EFFD4 /* PickerView.swift in Sources */,
+				9B5C4D311F6F6A1000D4C108 /* DocumentInteraction.swift in Sources */,
 				9BE304911F692415007A2EFE /* DetailViewController.swift in Sources */,
 				9B31555B1F677E9900111438 /* AppDelegate.swift in Sources */,
+				9B5C4D331F6F7A9200D4C108 /* SqliteManager.swift in Sources */,
 				9B3155891F67B3C000111438 /* String-Extension.swift in Sources */,
+				9B5C4D2F1F6F63C600D4C108 /* ReportViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -429,26 +518,32 @@
 		};
 		9B3155801F677E9900111438 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7739F140CCBA482E407CA676 /* Pods-PPLittleNote.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEFINES_MODULE = NO;
 				DEVELOPMENT_TEAM = 38697W2C3W;
 				INFOPLIST_FILE = PPLittleNote/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.diaoshihao.PPLittleNote;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/suger/Desktop/PPLittleNote/PPLittleNote/PPLittleNote-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		9B3155811F677E9900111438 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 234A96C12A9EC73E0E8B8A12 /* Pods-PPLittleNote.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEFINES_MODULE = NO;
 				DEVELOPMENT_TEAM = 38697W2C3W;
 				INFOPLIST_FILE = PPLittleNote/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.diaoshihao.PPLittleNote;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/suger/Desktop/PPLittleNote/PPLittleNote/PPLittleNote-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
