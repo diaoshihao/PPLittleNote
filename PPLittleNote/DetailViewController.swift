@@ -85,7 +85,13 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         if indexPath.section == 1 {
             let VC = ReportViewController()
-            VC.report = info.report
+            
+            VC.dataArr = info.report.components(separatedBy: ">>>")
+            VC.DidAddReport = {
+                (arr: [String]) -> Void in
+                    self.info.report = arr.joined(separator: ">>>")
+            }
+            
             self.navigationController?.pushViewController(VC, animated: true)
         }
     }
@@ -182,12 +188,14 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         
         let userInfo = UserInfo(from: info.from, name: info.name, sex: info.sex, age: info.age, birthday: info.birthday, idType: info.idtype, identity: info.identity, merriage: info.merriage, profession: info.profession, income: info.income, insurence: info.insurence, report: info.report, mobilephone: info.mobilephone, telephone: info.telephone, address: info.address)
-//        let model = PersonModel()
         
         let sqlMan = SqliteManager.shareManager
         
-        showAlert(success: sqlMan.insert(info: userInfo))
-//        showAlert(success: model.saveData(info: userInfo))
+        if sqlMan.query(by: "identity", value: info.identity).count != 0 {
+            showAlert(success: sqlMan.update(info: userInfo))
+        } else {
+            showAlert(success: sqlMan.insert(info: userInfo))
+        }
     }
     
     func showOptions(options: Array<String>, indexPath: IndexPath) {

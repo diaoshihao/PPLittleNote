@@ -128,6 +128,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         if sqlMan.delete(identity: info.identity) {
             dataArr.remove(at: indexPath.row)
             self.tableview.deleteRows(at: [indexPath], with: .automatic)
+        } else {
+            print("failed to delete")
         }
     }
     
@@ -142,7 +144,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func output() {
         let sqlMan = SqliteManager.shareManager
-        let arr = sqlMan.query(by: "name", value: "测试")
+        let arr = sqlMan.queryAll()
         if arr.count == 0 {
             
         }

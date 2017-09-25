@@ -10,8 +10,14 @@ import UIKit
 
 class ReportViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var report = [String]()
+    var dataArr = [String]()
+    
+    var adding = false
+    
+    var DidAddReport: (([String]) -> Void)?
+    
     let tableview = UITableView.init(frame: UIScreen.main.bounds, style: .plain);
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,13 +31,17 @@ class ReportViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableview.delegate = self
         tableview.dataSource = self
         tableview.tableFooterView = UIView()
-        tableview.register(CustomCell.self, forCellReuseIdentifier: "cell")
+        tableview.tableHeaderView = tableHeader()
+        tableview.register(ReportCell.self, forCellReuseIdentifier: "cell")
         
         self.view.addSubview(tableview)
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return report.count
+        if adding {
+            return dataArr.count + 1
+        }
+        return dataArr.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -42,15 +52,59 @@ class ReportViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return 30
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: ReportCell = tableview.dequeueReusableCell(withIdentifier: "cell") as! ReportCell
         cell.selectionStyle = .none
-        cell.textField.text = report[indexPath.section]
+        
+        //when adding, the last cell setting will beyond dataArr
+        if indexPath.section != dataArr.count {
+            cell.textView.text = dataArr[indexPath.section]
+        }
+        
         return cell
     }
     
-    func saveInfo() {
+    func tableHeader() -> UIView {
+        let button = UIButton(type: .custom)
+        button.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 44)
+        button.setTitle("添加记录", for: .normal)
+        button.setTitleColor(UIColor.black, for: .normal)
+        button.addTarget(self, action: #selector(addReport), for: .touchUpInside)
         
+        let seperator = UIView(frame: CGRect.init(x: 0, y: 43, width: UIScreen.main.bounds.size.width, height: 1))
+        seperator.backgroundColor = UIColor.lightGray
+        button.addSubview(seperator)
+        
+        return button
+    }
+    
+    func saveInfo() {
+        if !adding {
+            return
+        }
+        adding = false
+        self.view.endEditing(true)
+        
+        let cell: ReportCell = tableview.cellForRow(at: IndexPath(row: 0, section: dataArr.count)) as! ReportCell
+        let newReport = cell.textView.text
+        if newReport != nil {
+            
+            dataArr.append(newReport!)
+            if DidAddReport != nil {
+                DidAddReport!(dataArr)
+            }
+            self.navigationController?.popViewController(animated: true)
+            
+        }
+    }
+    
+    func addReport() {
+        adding = true
+        tableview.reloadData()
     }
 
 
@@ -72,9 +126,9 @@ class ReportViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
 }
 
-class ReportCell: UITableViewCell, UITextFieldDelegate {
+class ReportCell: UITableViewCell, UITextViewDelegate {
     
-    var textField = UITextField()
+    var textView = UITextView()
     
     var didChangeText: ((String) -> Void)?
     
@@ -83,25 +137,13 @@ class ReportCell: UITableViewCell, UITextFieldDelegate {
         
         textLabel?.font = UIFont.systemFont(ofSize: 14)
         
-        textField.frame = self.contentView.bounds
-        textField.font = UIFont.systemFont(ofSize: 14)
-        textField.delegate = self
-        textField.returnKeyType = .done
-        self.contentView.addSubview(textField)
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if didChangeText != nil {
-            didChangeText!(textField.text!)
-        }
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
+        textView.frame = self.contentView.bounds
+        textView.font = UIFont.systemFont(ofSize: 14)
+        textView.delegate = self
+        self.contentView.addSubview(textView)
     }
     
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
 }

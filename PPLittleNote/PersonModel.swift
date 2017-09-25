@@ -9,6 +9,7 @@
 import UIKit
 
 class UserInfo: NSObject {
+    
     var firstLetter = ""
     
     var from = ""
@@ -25,14 +26,14 @@ class UserInfo: NSObject {
     var mobilephone = ""
     var telephone = ""
     var address = ""
-    var report = [String]()
+    var report = ""
     
     
     override init() {
         
     }
     
-    init(from: String, name: String, sex: String, age: String, birthday: String, idType: String, identity: String, merriage: String, profession: String, income: String, insurence: String, report: Array<String>, mobilephone: String, telephone: String, address: String) {
+    init(from: String, name: String, sex: String, age: String, birthday: String, idType: String, identity: String, merriage: String, profession: String, income: String, insurence: String, report: String, mobilephone: String, telephone: String, address: String) {
         super.init()
         self.firstLetter = self.name.firstLetter()
         self.from = from
