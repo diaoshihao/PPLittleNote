@@ -17,13 +17,13 @@ extension String {
                 return string as String
             }
         }
-        return "#"
+        return "###"
     }
     
     func firstLetter() -> String {
         let pinyin = self.converToPinyin()
-        if pinyin == "" {
-            return ""
+        if pinyin == "###" {
+            return "#"
         }
         let regular = "^[A-Z]$"
         

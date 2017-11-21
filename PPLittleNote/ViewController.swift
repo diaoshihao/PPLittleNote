@@ -15,8 +15,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     let tableview = UITableView.init(frame: UIScreen.main.bounds, style: UITableViewStyle.plain)
     
-    var dataArr = Array<UserInfo>()
-//    let model = PersonModel()
+    var allArr = [UserInfo]()
+    
+    var dataArr = Array<[UserInfo]>()
+    var letterArr = [String]()
+    
     
     var isSearching = false
     var searchArr = Array<UserInfo>()
@@ -29,7 +32,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         // Do any additional setup after loading the view, typically from a nib.
         self.title = "客户资源"
         
-        let leftItem = UIBarButtonItem.init(title: "导出", style: .plain, target: self, action: #selector(output))
+        let leftItem = UIBarButtonItem.init(title: "刷新", style: .plain, target: self, action: #selector(output))
         self.navigationItem.leftBarButtonItem = leftItem
         
         let rightItem = UIBarButtonItem.init(title: "添加", style: .plain, target: self, action: #selector(addUser))
@@ -42,7 +45,33 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func getData() {
         
-        dataArr = sqlMan.queryAll()
+        allArr = sqlMan.queryAll().sorted(by: { (info1, info2) -> Bool in
+            return info1.firstLetter < info2.firstLetter
+        })
+        
+        var personDict = [String:[UserInfo]]()
+        
+        //group
+        for info in allArr {
+            if personDict[info.firstLetter] != nil {
+                personDict[info.firstLetter]?.append(info)
+            } else {
+                let newGroup = [info]
+                personDict[info.firstLetter] = newGroup
+            }
+        }
+        
+        letterArr = personDict.keys.sorted(by: <)
+        if letterArr.contains("#") {
+            letterArr.remove(at: letterArr.index(of: "#")!)
+            letterArr.append("#")
+        }
+        
+        dataArr.removeAll()
+        for firstLetter in letterArr {
+            dataArr.append(personDict[firstLetter]!)
+        }
+        
         tableview.reloadData()
     }
     
@@ -60,14 +89,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         if isSearching {
             return 1
         }
-        return 1
+        return letterArr.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.isSearching {
             return searchArr.count
         }
-        return dataArr.count
+        
+        let group = dataArr[section]
+        return group.count
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -78,13 +109,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "#"
+        return letterArr[section]
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableview.dequeueReusableCell(withIdentifier: normalCell)
         cell?.selectionStyle = .none
-        let info = isSearching ? searchArr[indexPath.row] : dataArr[indexPath.row]
+        let info = isSearching ? searchArr[indexPath.row] : dataArr[indexPath.section][indexPath.row]
         cell?.textLabel?.text = info.name
         return cell!
     }
@@ -92,7 +123,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let VC = DetailViewController()
         VC.title = "客户详情"
-        let info = dataArr[indexPath.row]
+        let info = isSearching ? searchArr[indexPath.row] : dataArr[indexPath.section][indexPath.row]
         VC.info = info
         VC.update = {
             self.getData()
@@ -109,7 +140,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
-        return .delete
+        return isSearching ? .none : .delete
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
@@ -124,10 +155,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func removeUser(indexPath: IndexPath) {
-        let info = dataArr[indexPath.row]
+        let info = isSearching ? searchArr[indexPath.row] : dataArr[indexPath.section][indexPath.row]
         if sqlMan.delete(identity: info.identity) {
-            dataArr.remove(at: indexPath.row)
-            self.tableview.deleteRows(at: [indexPath], with: .automatic)
+            getData()
+            tableview.reloadData()
         } else {
             print("failed to delete")
         }
@@ -143,11 +174,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func output() {
-        let sqlMan = SqliteManager.shareManager
-        let arr = sqlMan.queryAll()
-        if arr.count == 0 {
-            
-        }
+        getData()
     }
     
     
@@ -155,13 +182,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let searchBar = UISearchBar.init(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 50))
         searchBar.delegate = self
         searchBar.returnKeyType = .done
+        UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).title = "取消"
         return searchBar
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         isSearching = true
         searchArr.removeAll()
-        for item in dataArr {
+        for item in allArr {
             if item.name.contains(searchText) || item.name.converToPinyin().contains(searchText) {
                 searchArr.append(item)
             }
@@ -184,6 +212,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         searchBar.showsCancelButton = false
         return true
     }
+    
+    
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()

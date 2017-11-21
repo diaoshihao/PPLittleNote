@@ -30,8 +30,7 @@ class ReportViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func initSubview() {
         tableview.delegate = self
         tableview.dataSource = self
-        tableview.tableFooterView = UIView()
-        tableview.tableHeaderView = tableHeader()
+        tableview.tableFooterView = addButton()
         tableview.register(ReportCell.self, forCellReuseIdentifier: "cell")
         
         self.view.addSubview(tableview)
@@ -49,7 +48,7 @@ class ReportViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 30
+        return 10
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -68,14 +67,14 @@ class ReportViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return cell
     }
     
-    func tableHeader() -> UIView {
+    func addButton() -> UIView {
         let button = UIButton(type: .custom)
         button.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 44)
         button.setTitle("添加记录", for: .normal)
         button.setTitleColor(UIColor.black, for: .normal)
         button.addTarget(self, action: #selector(addReport), for: .touchUpInside)
         
-        let seperator = UIView(frame: CGRect.init(x: 0, y: 43, width: UIScreen.main.bounds.size.width, height: 1))
+        let seperator = UIView(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 1))
         seperator.backgroundColor = UIColor.lightGray
         button.addSubview(seperator)
         
